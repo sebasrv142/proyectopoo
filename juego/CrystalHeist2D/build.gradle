@@ -1,0 +1,40 @@
+allprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    version = '1.0.0'
+    ext {
+        appName = 'CrystalHeist2D'
+        gdxVersion = '1.13.0'
+        aiVersion = '1.8.2'
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    }
+}
+
+project(':core') {
+    apply plugin: 'java-library'
+
+    dependencies {
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+    }
+}
+
+project(':lwjgl3') {
+    apply plugin: 'application'
+
+    application.mainClass = 'com.crystalheist.game.lwjgl3.Lwjgl3Launcher'
+
+    dependencies {
+        implementation project(':core')
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    }
+}
